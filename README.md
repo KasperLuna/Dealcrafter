@@ -15,10 +15,10 @@ The primary purpose of the Dealcrafter Inventory Management Site is to provide a
 
 - **qrcode:** NPM package used to generate inventory QR Codes.
 
-# System Screenshots
+## System Screenshots
 
 - Login
-  ![Login](https://res.cloudinary.com/dy9kcczqb/image/upload/v1632105056/portfolio-dealcrafterIMAGES/ejaylogin_rnowvv.png))
+  ![Login](https://res.cloudinary.com/dy9kcczqb/image/upload/v1632105056/portfolio-dealcrafterIMAGES/ejaylogin_rnowvv.png)
 - New Arrivals
   ![New Arrivals](https://res.cloudinary.com/dy9kcczqb/image/upload/v1632105055/portfolio-dealcrafterIMAGES/ejay_arrivals_d52t6r.png)
 - Staged Items
