@@ -1,4 +1,4 @@
-# DEALCRAFTER (reupload)
+# Dealcrafter (reupload)
 
 This is the codebase for the **Dealcrafter Inventory Management Site**. The final commit for this website was made on _May 23, 2021_ in its original repository, and is no longer being actively maintained as its' delivery has fulfilled the client's requests. This codebase has been reuploaded with permission from its owner.
 
