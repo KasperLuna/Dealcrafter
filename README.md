@@ -10,7 +10,7 @@ The primary purpose of the Dealcrafter Inventory Management Site is to provide a
 - **Express.JS:** Backend Framework with which the site is structured with.
 - **EJS:** Template Engine used for serving frontend design and retrieved data, designed with Bootstrap 5.
 - **PostgreSQL:** Database solution used for storing inventory item data, user accounts, etc.
-- **Redis:** Key-pair store used for caching queries and session data to optimize the site's performance.
+- **Redis:** Key-value store used for caching queries and session data to optimize site's performance.
 - **Sendgrid:** Email Sending solution used for user authentication.
 
 - **qrcode:** NPM package used to generate inventory QR Codes.
