@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="/CSS/main.css">
+        <link rel="shortcut icon" type="image/jpg" href="/IMG/favicon.ico"/>
+        <title>EJAY RELLOSA LLC - MANAGE USERS</title>
+    </head>
+    <body id="body-pd">
+        <header class="header" id="header">
+            <div class="header__toggle" id="menu">
+                <i class='bx bx-menu' id="header-toggle"></i>
+            </div>
+            <div class="header__img" id="profile">
+                <h5><%=username%></h5>
+            </div>
+            <div class="header__img2">
+                <img src="/IMG/logo.png" alt="">
+            </div>
+        </header>
+        <div class="l-navbar" id="nav-bar">
+            <nav class="nav">
+                <div>
+                    <a href="#" class="nav__logo">
+                        <img src="/IMG/logo.png" alt="">
+                        <span class="nav__logo-name">EJAY LLC</span>
+                    </a>
+
+                    <div class="nav__list">
+                        <a href="/new-arrival" class="nav__link ">
+                        <i class='bx bx-grid-alt nav__icon' ></i>
+                            <span class="nav__name">New Arrivals</span>
+                        </a>
+
+                        <a href="/staged-items" class="nav__link">
+                            <i class='bx bx-grid nav__icon' ></i>
+                            <span class="nav__name">Staged Items</span>
+                        </a>
+
+                        <a href="/manage-users" class="nav__link active">
+                            <i class='bx bx-user nav__icon' ></i>
+                            <span class="nav__name">Manage Users</span>
+                        </a>
+
+                        <a href="/locate" class="nav__link">
+                            <i class='bx bx-current-location nav__icon'></i>
+                            <span class="nav__name">Locate Item</span>
+                        </a>
+                        
+                        <a href="/manage-inventory" class="nav__link">
+                            <i class='bx bx-folder nav__icon' ></i>
+                            <span class="nav__name">Manage Inventory</span>
+                        </a>
+
+                        <a href="/report" class="nav__link">
+                            <i class='bx bx-file-blank nav__icon' ></i>
+                            <span class="nav__name">Inventory Report</span>
+                        </a>
+
+                        <a href="/generate" class="nav__link">
+                            <i class='bx bx-barcode nav__icon' ></i>
+                            <span class="nav__name">Generate QR Code</span>
+                        </a>
+
+                        <a href="/scan" class="nav__link">
+                            <i class='bx bx-screenshot nav__icon' ></i>
+                            <span class="nav__name">Scan QR Code</span>
+                        </a>
+
+                        <a href="/logout" class="nav__link">
+                            <i class='bx bx-log-out nav__icon' ></i>
+                            <span class="nav__name">Log Out</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="title-header">            
+            <h2>Users</h2>
+            <%
+            if(priority == 1){
+            %>
+                <button data-bs-toggle="modal" data-bs-target="#add">Add User</button>
+            <% } %> 
+        </div>
+        <table class="content-table">
+            <thead>
+                <tr>
+                    <td>Username</td>
+                    <td>Email</td>
+                    <td>Password</td>
+                    <%
+                    if(priority == 1){
+                    %>
+                    <td>Action</td>
+                    <% } %> 
+                  </tr>
+            </thead>
+            
+            <tbody>
+                
+                <%
+                if(queryData.length!=0){
+                var i=1;
+                queryData.forEach(function(data){
+                %>
+                <tr class="active-row">
+                    <td data-col-title="Username"><%=data.username %></td>
+                    <td data-col-title="Email"><%=data.email %></td>
+                    <td data-col-title="Password">*********</td>
+                    <%
+                    if(priority == 1){
+                    %>
+                    <td data-col-title="Action">
+                        <button type="button"  data-bs-toggle="modal" data-bs-target="#edit" class="btn btn-primary" data-name="<%=data.username%>" data-email="<%=data.email%>" >Edit</button>
+                        <% if(data.priority == 0) { %>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#delete" class="btn btn-danger" data-name="<%=data.username%>" data-email="<%=data.email%>">Delete</button>
+                        <% } %> 
+                    </td>
+                    <% } %> 
+                </tr>
+                <%  i++; }) %>
+                <% } else{ %>
+                <tr>
+                    <td colspan="4" align="center">No Data Found</td>
+                </tr>
+                <% } %>
+
+            </tbody>
+
+        
+        
+ <!-- Modal Edit -->
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Manage User</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+            <form id="insert_form" action="/editUser" method="POST">
+            <label>Username</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+            <br/>
+            <label>Email</label> 
+            <input type="email" class="form-control" id="email" name="email" readonly required>
+            <br />
+            <label>Password (No Input, No Change)</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Input Password">
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" id="confirm" class="btn btn-primary" >Save Changes</button>
+        </div>
+        </div>
+    </form>
+    </div>
+</div>
+
+ <!-- Modal Add -->
+<div class="modal fade" id="add" tabindex="-1" aria-labelledby="add" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Add User</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="insert_form1" action="/addUser" method="POST">
+            <label>Username</label>
+            <input type="text" class="form-control" id="username1" name="username1" placeholder="Input Username" required/>
+            <br />
+            <label>Email</label>
+            <input type="email" class="form-control" id="email1" name="email1" placeholder="Input Email" required/>
+            <br />
+            <label>Password</label>
+            <input type="password" class="form-control" id="password1" name="password1" placeholder="Input Password" required/>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="confirm1" class="btn btn-primary">Add User</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+            
+ <!-- Modal Delete-->
+<div class="modal fade" id="delete" tabindex="-1" aria-labelledby="delete" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Deletion of User</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h5>Are you sure you want to delete this user?</h5>
+        </div>
+  
+        <div class="modal-footer">
+        <form id="insert_form" action="/deleteUser" enctype="multipart/form-data" method="POST">
+            <input type="text" hidden id="email" name="email" class="form-control"/>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>           
+        </table>        
+<!--===== MAIN JS =====-->
+<script src="/JS/main.js"></script>
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" alt="/JS/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    
+<!--===== jQuery for Variable Modals =====-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" alt="/JS/jquery.min.js"></script>
+<script>
+    $('#edit').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var recipient = button.data('name')
+    var recipient1 = button.data('email')
+    var modal = $(this)
+    modal.find('.modal-title').text('Edit Information of ' + recipient)
+    modal.find("#username").val(recipient)
+    modal.find("#email").val(recipient1)
+    })
+
+    $('#delete').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var recipient = button.data('email')
+    var recipient1 = button.data('name')
+    var modal = $(this)
+    modal.find("#email").val(recipient)
+    modal.find('.modal-title').text('Account Deletion of ' + recipient1)
+    })
+
+    $("#confirm").click(function() {
+        var pass = $('#password').val();
+        var passw=  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+        if (!pass){
+            $( "#insert_form" ).submit();
+        } else if (!pass.match(passw)) {
+            swal("Oops.", "Please enter a Password that is between 8 to 15 characters which contains at least one lowercase letter, one uppercase letter, one numeric digit, and one special character.", "warning");
+        } else {
+            $( "#insert_form" ).submit();
+        }
+    })
+
+    $("#confirm1").click(function() {
+        var pass = $('#password1').val();
+        var passw=  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+        if (!pass.match(passw)) {
+            swal("Oops.", "Please enter a Password that is between 8 to 15 characters which contains at least one lowercase letter, one uppercase letter, one numeric digit, and one special character.", "warning");
+        } else {
+            $( "#insert_form1" ).submit();
+        }
+    })
+</script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" alt="/JS/sweetalert.min.js"></script>
+
+    </body>
+</html>

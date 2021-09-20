@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="/CSS/main.css">
+        <link rel="shortcut icon" type="image/jpg" href="/IMG/favicon.ico"/>
+        <title>EJAY RELLOSA LLC - GENERATE QR CODE</title>
+    </head>
+    <body id="body-pd">
+        <header class="header" id="header">
+            <div class="header__toggle" id="menu">
+                <i class='bx bx-menu' id="header-toggle"></i>
+            </div>
+            <div class="header__img" id="profile">
+                    <h5><%=username%></h5>
+            </div>
+            <div class="header__img2">
+                <img src="/IMG/logo.png" alt="">
+            </div>
+        </header>
+
+        <%
+        var new_id;
+        if (product[0].max_product > stage[0].max_stage){
+            new_id = product[0].max_product + 1;
+        } else {
+            new_id = stage[0].max_stage + 1;
+        }
+        %>
+
+        <div class="l-navbar" id="nav-bar">
+            <nav class="nav">
+                <div>
+                    <a href="#" class="nav__logo">
+                        <img src="/IMG/logo.png" alt="">
+                        <span class="nav__logo-name">EJAY LLC</span>
+                    </a>
+
+                    <div class="nav__list">
+                        <a href="/new-arrival" class="nav__link">
+                        <i class='bx bx-grid-alt nav__icon' ></i>
+                            <span class="nav__name">New Arrivals</span>
+                        </a>
+
+                        <a href="/staged-items" class="nav__link">
+                            <i class='bx bx-grid nav__icon' ></i>
+                            <span class="nav__name">Staged Items</span>
+                        </a>
+
+                        <a href="/manage-users" class="nav__link">
+                            <i class='bx bx-user nav__icon' ></i>
+                            <span class="nav__name">Manage Users</span>
+                        </a>
+
+                        <a href="/locate" class="nav__link">
+                            <i class='bx bx-current-location nav__icon'></i>
+                            <span class="nav__name">Locate Item</span>
+                        </a>
+                        
+                        <a href="/manage-inventory" class="nav__link">
+                            <i class='bx bx-folder nav__icon' ></i>
+                            <span class="nav__name">Manage Inventory</span>
+                        </a>
+
+                        <a href="/report" class="nav__link">
+                            <i class='bx bx-file-blank nav__icon' ></i>
+                            <span class="nav__name">Inventory Report</span>
+                        </a>
+
+                        <a href="/generate" class="nav__link active">
+                            <i class='bx bx-barcode nav__icon' ></i>
+                            <span class="nav__name">Generate QR Code</span>
+                        </a>
+
+                        <a href="/scan" class="nav__link">
+                            <i class='bx bx-screenshot nav__icon' ></i>
+                            <span class="nav__name">Scan QR Code</span>
+                        </a>
+
+                        <a href="/logout" class="nav__link">
+                            <i class='bx bx-log-out nav__icon' ></i>
+                            <span class="nav__name">Log Out</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="container">
+        <div class="qrbox">
+        </br></br>
+            <h1>QR Code Generator</h1>
+            <p>Save the Image below for the Next Added Item</p>
+            <div id="output"></div>
+            <small><i>If you fail to save the QR Code, </br> it is available in the "Manage Inventory" Tab.</i></small>
+        <div class="qrsubmit">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#edit" data-new_id="<%=new_id%>">Add New Item</button>
+        </div>
+        
+        </div>
+        
+        </div>
+         <!-- Modal Edit -->
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Item ID</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="insert_form" action="/addItem" enctype="multipart/form-data" method="POST">
+            <label>Item Name</label>
+            <input type="text" hidden id="new_id" name="new_id" class="form-control"/>
+            <input type="text" required id="item_name" name="item_name" class="form-control"/>
+            <br/>
+            <label>Supplier</label>
+            <input type="text" required id="supplier" name="supplier" class="form-control"/>
+            <br/>
+            <label>Quantity</label>
+            <input type="number" required id="quantity" name="quantity" class="form-control"/>
+            <br/>  
+            <label>Location</label>
+            <input type="text" required id="item_location" name="item_location" class="form-control" />
+            <br/>  
+            <label>Category</label>
+            <input type="text" required id="category" name="category" class="form-control" />
+            <br/>  
+            <label>Minimum Price</label>
+            <input type="number" required id="min_price" name="min_price" min="0.00" step="0.01" class="form-control"/>
+            <br/>  
+            <label>Product Image</label>
+            <input type="file" required id="newImg" name="newImg"  class="form-control"/>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save New Item<Code></Code></button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+
+  <!---QR Code Generation--->
+
+  <script src="/JS/qrcode.js"></script>
+  <script>
+        let qrcode = new QRCode("output", {
+            text: "<%=new_id%>",
+            width: 177,
+            height: 177,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.L
+        });  
+    </script>
+
+<!--===== jQuery for Variable Modals =====-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" alt="/JS/jquery.min.js"></script>
+  <script>
+  $('#edit').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var recipient = button.data('new_id')
+  var modal = $(this)
+  modal.find("#new_id").val(recipient)
+  })
+  </script>
+
+
+          <!--===== MAIN JS =====-->
+<script src="/JS/main.js" alt=''></script>
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" alt="/JS/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    </body>
+</html>

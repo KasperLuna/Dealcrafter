@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/CSS/main.css" />
+    <link rel="shortcut icon" type="image/jpg" href="/IMG/favicon.ico" />
+    <title>EJAY RELLOSA LLC - NEW ARRIVAL</title>
+  </head>
+  <body id="body-pd">
+    <header class="header" id="header">
+      <div class="header__toggle" id="menu">
+        <i class="bx bx-menu" id="header-toggle"></i>
+      </div>
+      <div class="header__img" id="profile">
+        <h5><%=username%></h5>
+      </div>
+      <div class="header__img2">
+        <img src="/IMG/logo.png" alt="" />
+      </div>
+    </header>
+
+    <div class="l-navbar" id="nav-bar">
+      <nav class="nav">
+        <div>
+          <a href="#" class="nav__logo">
+            <img src="/IMG/logo.png" alt="" />
+            <span class="nav__logo-name">EJAY LLC</span>
+          </a>
+
+          <div class="nav__list">
+            <a href="/new-arrival" class="nav__link active">
+              <i class="bx bx-grid-alt nav__icon"></i>
+              <span class="nav__name">New Arrivals</span>
+            </a>
+
+            <a href="/staged-items" class="nav__link">
+              <i class="bx bx-grid nav__icon"></i>
+              <span class="nav__name">Staged Items</span>
+            </a>
+
+            <a href="/manage-users" class="nav__link">
+              <i class="bx bx-user nav__icon"></i>
+              <span class="nav__name">Manage Users</span>
+            </a>
+
+            <a href="/locate" class="nav__link">
+              <i class="bx bx-current-location nav__icon"></i>
+              <span class="nav__name">Locate Item</span>
+            </a>
+
+            <a href="/manage-inventory" class="nav__link">
+              <i class="bx bx-folder nav__icon"></i>
+              <span class="nav__name">Manage Inventory</span>
+            </a>
+
+            <a href="/report" class="nav__link">
+              <i class="bx bx-file-blank nav__icon"></i>
+              <span class="nav__name">Inventory Report</span>
+            </a>
+
+            <a href="/generate" class="nav__link">
+              <i class="bx bx-barcode nav__icon"></i>
+              <span class="nav__name">Generate QR Code</span>
+            </a>
+
+            <a href="/scan" class="nav__link">
+              <i class="bx bx-screenshot nav__icon"></i>
+              <span class="nav__name">Scan QR Code</span>
+            </a>
+
+            <a href="/logout" class="nav__link">
+              <i class="bx bx-log-out nav__icon"></i>
+              <span class="nav__name">Log Out</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="title-header">
+      <h2>New Arrivals</h2>
+      <div class="select-option">
+        <select name="sorting" id="sorting">
+          <option value="" selected disabled>Sort By:</option>
+          <option value="NameSort">Sort by Name</option>
+          <option value="IDSort">Sort by Item ID</option>
+          <option value="CategorySort">Sort by Category</option>
+        </select>
+      </div>
+    </div>
+
+    <table class="content-table">
+      <thead>
+        <tr>
+          <th>Item Name</th>
+          <th>Date</th>
+          <th>Item Id</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% if(queryData.length!=0){ var i=1; queryData.slice(0,
+        20).forEach(function(data){ %>
+        <tr>
+          <td data-col-title="Item"><%=data.item_name%></td>
+          <td data-col-title="Date">
+            <%=moment(data.date_added).format('Do MMMM, YYYY') %>
+          </td>
+          <td data-col-title="Item Id"><%=data.item_id%></td>
+          <td data-col-title="Category"><%=data.category%></td>
+        </tr>
+        <% i++; }) %> <% } else{ %>
+        <tr>
+          <td colspan="4" align="center">No Data Found</td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <!--===== MAIN JS =====-->
+    <script src="/JS/main.js"></script>
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      alt="/JS/jquery.min.js"
+    ></script>
+    <script>
+      jQuery.redirect = function (url, params) {
+        url = url || window.location.href || "";
+        url = url.match(/\?/) ? url : url + "?";
+
+        for (var key in params) {
+          var re = RegExp(";?" + key + "=?[^&;]*", "g");
+          url = url.replace(re, "");
+          url += ";" + key + "=" + params[key];
+        }
+        // cleanup url
+        url = url.replace(/[;&]$/, "");
+        url = url.replace(/\?[;&]/, "?");
+        url = url.replace(/[;&]{2}/g, ";");
+        $(location).attr("href", url);
+        window.location.replace(url);
+      };
+
+      $("#sorting").change(function () {
+        $.redirect(location.href, { sort: $(this).val() });
+      });
+    </script>
+  </body>
+</html>

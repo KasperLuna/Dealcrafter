@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="/CSS/main.css">
+        <link rel="shortcut icon" type="image/jpg" href="/IMG/favicon.ico"/>
+        <title>EJAY RELLOSA LLC - INVENTORY</title>
+    </head>
+    <body id="body-pd">
+        <header class="header" id="header">
+            <div class="header__toggle" id="menu">
+                <i class='bx bx-menu' id="header-toggle"></i>
+            </div>
+            <div class="header__img" id="profile">
+              <h5><%=username%></h5>
+            </div>
+            <div class="header__img2">
+                <img src="/IMG/logo.png" alt="">
+            </div>
+        </header>
+
+        <div class="l-navbar" id="nav-bar">
+            <nav class="nav">
+                <div>
+                    <a href="#" class="nav__logo">
+                        <img src="/IMG/logo.png" alt="">
+                        <span class="nav__logo-name">EJAY LLC</span>
+                    </a>
+
+                    <div class="nav__list">
+                      <a href="/new-arrival" class="nav__link ">
+                      <i class='bx bx-grid-alt nav__icon' ></i>
+                          <span class="nav__name">New Arrivals</span>
+                      </a>
+
+                      <a href="/staged-items" class="nav__link ">
+                        <i class='bx bx-grid nav__icon' ></i>
+                        <span class="nav__name">Staged Items</span>
+                      </a>
+
+                      <a href="/manage-users" class="nav__link">
+                          <i class='bx bx-user nav__icon' ></i>
+                          <span class="nav__name">Manage Users</span>
+                      </a>
+
+                      <a href="/locate" class="nav__link">
+                          <i class='bx bx-current-location nav__icon'></i>
+                          <span class="nav__name">Locate Item</span>
+                      </a>
+                      
+                      <a href="/manage-inventory" class="nav__link active">
+                          <i class='bx bx-folder nav__icon' ></i>
+                          <span class="nav__name">Manage Inventory</span>
+                      </a>
+
+                      <a href="/report" class="nav__link">
+                          <i class='bx bx-file-blank nav__icon' ></i>
+                          <span class="nav__name">Inventory Report</span>
+                      </a>
+
+                      <a href="/generate" class="nav__link">
+                          <i class='bx bx-barcode nav__icon' ></i>
+                          <span class="nav__name">Generate QR Code</span>
+                      </a>
+
+                      <a href="/scan" class="nav__link">
+                          <i class='bx bx-screenshot nav__icon' ></i>
+                          <span class="nav__name">Scan QR Code</span>
+                      </a>
+
+                      <a href="/logout" class="nav__link">
+                        <i class='bx bx-log-out nav__icon' ></i>
+                        <span class="nav__name">Log Out</span>
+                    </a>
+                  </div>
+              </div>
+          </nav>
+      </div>
+
+        
+        <div class="title-header">            
+            <h2>Manage Inventory</h2>      
+            <div class="select-option">
+                <select name="sorting" id="sorting">
+                  <option value="" selected disabled>Sort By:</option>
+                  <option value="NameSort">Sort by Name</option>
+                  <option value="IDSort">Sort by Item ID</option>
+                  <option value="CategorySort">Sort by Category</option>
+                  <option value="SupplierSort ">Sort by Supplier</option>
+                  <option value="QuantitySort ">Sort by Quantity</option>
+                  <option value="PriceSortAsc ">Sort by Min. Price (Ascending)</option>
+                  <option value="PriceSortDesc ">Sort by Min. Price (Descending)</option>
+                </select>
+              </div>         
+        </div>
+    
+        <div class="search">
+              <input type="text" id="search" name="search" class="searchTerm" placeholder="What are you looking for?">
+              <button type="button" id="searchButton" class="searchButton value="click">
+             <i class='bx bx-search-alt'></i>
+           </button>
+         </div>
+        <table class="content-table">
+            <thead>
+                <tr>
+                    <td>Item Id</td>
+                    <td>Item</td>
+                    <td>Supplier</td>
+                    <td>Quantity</td>
+                    <td>Category</td>
+                    <td>Min. Price</td>
+                    <td>Action</td>
+                  </tr>
+            </thead>       
+            <tbody>
+              <%
+              if(queryData.length!=0){
+              var i=1;
+              queryData.slice(0, 50).forEach(function(data){
+              %>
+                <tr>
+                    <td data-col-title="Item Id"><%=data.item_id%></td>
+                    <td data-col-title="Item"><%=data.item_name%></td>
+                    <td data-col-title="Supplier"><%=data.supplier%></td>
+                    <td data-col-title="Quantity"><%=data.quantity%></td>
+                    <td data-col-title="Category"><%=data.category%></td>
+                    <td data-col-title="Min. Price">$<%=data.min_price%></td>
+                    <td data-col-title="Action">
+                    <button type="button"  data-bs-toggle="modal" data-bs-target="#edit" data-item_name="<%=data.item_name%>" data-item_location="<%=data.item_location%>" data-supplier="<%=data.supplier%>" data-quantity="<%=data.quantity%>" data-category="<%=data.category%>" data-min_price="<%=data.min_price%>" data-img="<%=data.img%>" data-item_id="<%=data.item_id%>" class="btn btn-primary">Edit</button> 
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#view" data-item_name="<%=data.item_name%>" data-item_location="<%=data.item_location%>" data-supplier="<%=data.supplier%>" data-quantity="<%=data.quantity%>" data-category="<%=data.category%>" data-min_price="<%=data.min_price%>" data-img="<%=data.img%>" data-item_id="<%=data.item_id%>" data-img="<%=data.img%>" data-qr="<%=data.qr%>" class="btn btn-primary">View</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#delete" data-item_name="<%=data.item_name%>" data-item_location="<%=data.item_location%>" data-supplier="<%=data.supplier%>" data-quantity="<%=data.quantity%>" data-category="<%=data.category%>" data-min_price="<%=data.min_price%>" data-img="<%=data.img%>" data-item_id="<%=data.item_id%>" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+              <%  i++; }) %>
+              <% } else{ %>
+              <tr>
+                  <td colspan="7" align="center">No Data Found</td>
+              </tr>
+              <% } %>  
+            </tbody>
+             
+          </table>   
+
+  <!-- Modal View -->
+<div class="modal fade" id="view" tabindex="-1" aria-labelledby="view" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="card-container">
+                <div class="card">
+                    <img src="" id="img" class="card__img"> 
+                         <div class="card__data">
+                             <h1 class="card__title" id="item_name">Product Name:</h1>    
+                             <span class="card__preci" id="min_price">Price:</span>
+                             <p class="card__description" id="supplier">Supplier:</p>
+                             <br>
+                             <p class="card__description" id="category">Category:</p>
+                             <br>
+                             <p class="card__description" id="quantity">Quantity:</p>
+                             <br>
+                             <p class="card__description" id="item_location">Location:</p> 
+                             <br>
+                             <a type="button" href="" class="btn btn-light" id="qrSave" download>Download QR Code</a>
+                         </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Edit -->
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Item ID</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="insert_form" action="/editItem" enctype="multipart/form-data" method="POST">
+            <label>Item Name</label>
+            <input type="text" hidden id="stageItem" value=0 name="stageItem"/>
+            <input type="text" hidden id="item_id" name="item_id" class="form-control"/>
+            <input type="text" id="item_name" name="item_name" class="form-control"/>
+            <br/>
+            <label>Supplier</label>
+            <input type="text" id="supplier" name="supplier" class="form-control"/>
+            <br/>
+            <label>Quantity</label>
+            <input type="number" id="quantity" name="quantity" class="form-control"/>
+            <br/>  
+            <label>Location</label>
+            <input type="text" id="item_location" name="item_location" class="form-control" />
+            <br/>  
+            <label>Category</label>
+            <input type="text" id="category" name="category" class="form-control" />
+            <br/>  
+            <label>Minimum Price</label>
+            <input type="number" id="min_price" name="min_price" min="0.00" step="0.01" class="form-control"/>
+            <br/>  
+            <label>Product Image (No Chosen File, No Change)</label>
+            <input type="file" id="newImg" name="newImg"  class="form-control"/>
+            <input type="text" hidden id="img" name="img" class="form-control"/>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Delete-->
+<div class="modal fade" id="delete" tabindex="-1" aria-labelledby="delete" aria-hidden="true" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="title" name="title">Deletion of //NAME OF THE ITEM//</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>Are you sure you want to delete this item? </br></br> Any existing QR Codes under this item ID may be duplicated, Please replace immediately.</h5>
+      </div>
+
+      <div class="modal-footer">
+        <form id="insert_form" action="/deleteItem" enctype="multipart/form-data" method="POST">
+          <% if(priority == 1){ %>
+          <input type="text" hidden id="stageItem" value=0 name="stageItem"/>
+          <% } else { %>
+          <input type="text" hidden id="stageItem" value=2 name="stageItem"/>
+          <% } %>
+          <input type="text" hidden id="item_id" name="item_id" class="form-control"/>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+          <!--===== MAIN JS =====-->
+        <script src="/JS/main.js"></script>
+
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" alt="/JS/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+<!--===== jQuery for Variable Modals =====-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" alt="/JS/jquery.min.js"></script>
+<script>
+  $('#edit').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var recipient = button.data('item_id')
+  var recipient1 = button.data('item_name')
+  var recipient2 = button.data('supplier')
+  var recipient3 = button.data('quantity')
+  var recipient4 = button.data('category')
+  var recipient5 = button.data('min_price')
+  var recipient6 = button.data('img')
+  var recipient7 = button.data('item_location')
+  var modal = $(this)
+  modal.find("#item_id").val(recipient)
+  modal.find("#item_name").val(recipient1)
+  modal.find("#supplier").val(recipient2)
+  modal.find("#quantity").val(recipient3)
+  modal.find("#category").val(recipient4)
+  modal.find("#min_price").val(recipient5)
+  modal.find("#img").val(recipient6)
+  modal.find("#item_location").val(recipient7)
+  })
+
+  $('#view').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var recipient = button.data('item_id')
+  var recipient1 = button.data('item_name')
+  var recipient2 = button.data('supplier')
+  var recipient3 = button.data('quantity')
+  var recipient4 = button.data('category')
+  var recipient5 = button.data('min_price')
+  var recipient6 = button.data('item_location')
+  var recipient7 = '../products/' + button.data('img')
+  var recipient8 = '../QR/' + button.data('qr')
+  var modal = $(this)
+  modal.find("#item_id").text(recipient)
+  modal.find("#item_name").text('Name: ' + recipient1)
+  modal.find("#supplier").text('Supplier: ' +recipient2)
+  modal.find("#quantity").text('Quantity: ' +recipient3)
+  modal.find("#category").text('Category: ' +recipient4)
+  modal.find("#min_price").text('$' +recipient5)
+  modal.find("#item_location").text('Location: ' +recipient6)
+  modal.find("#img").attr("src", recipient7)
+  modal.find("#qrSave").attr("href", recipient8)
+  })
+
+  $('#delete').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var recipient = button.data('item_id')
+  var recipient1 = button.data('item_name')
+  var modal = $(this)
+  modal.find("#item_id").val(recipient)
+  modal.find("#title").text('Item Deletion of ' +recipient1)
+  })
+
+  jQuery.redirect = function(url, params) {
+
+  url = url || window.location.href || '';
+  url =  url.match(/\?/) ? url : url + '?';
+
+  for ( var key in params ) {
+      var re = RegExp( ';?' + key + '=?[^&;]*', 'g' );
+      url = url.replace( re, '');
+      url += '&' + key + '=' + params[key]; 
+  }  
+  // cleanup url 
+  url = url.replace(/[;&]$/, '');
+  url = url.replace(/\?[;&]/, '?'); 
+  url = url.replace(/[;&]{2}/g, '&');
+  $(location).attr('href', url);
+  window.location.replace( url ); 
+  };
+
+  $('#sorting').change(function(){ 
+      $.redirect( location.href, { sort : $(this).val() })
+  })
+
+  $('#searchButton').click(function(){
+    $.redirect( location.href, { search : $('#search').val() })
+  })
+
+  document.querySelector("#search").addEventListener("keyup", event => {
+    if(event.key !== "Enter") return;
+    document.querySelector("#searchButton").click();
+    event.preventDefault();
+});
+</script>
+
+    </body>
+</html>
